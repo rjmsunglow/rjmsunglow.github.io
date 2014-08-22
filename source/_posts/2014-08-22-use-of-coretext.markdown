@@ -77,55 +77,55 @@ categories:
 ```
 CTFrameRef  textFrame     // coreText 的 frame
 
-     CTLineRef      line             //  coreText 的 line
+    CTLineRef      line             //  coreText 的 line
 
-     CTRunRef      run             //  line  中的部分文字
+    CTRunRef      run             //  line  中的部分文字
 
-     相关方法：
+    //相关方法：
 
    
-   CFArrayRef CTFrameGetLines    (CTFrameRef frame )      //获取包含CTLineRef的数组
+    CFArrayRef CTFrameGetLines    (CTFrameRef frame )      //获取包含CTLineRef的数组
 
-   void CTFrameGetLineOrigins(
-   CTFrameRef frame,
-   CFRange range,
-   CGPoint origins[] )  //获取所有CTLineRef的原点
+    void CTFrameGetLineOrigins(
+    CTFrameRef frame,
+    CFRange range,
+    CGPoint origins[] )  //获取所有CTLineRef的原点
 
- CFRange CTLineGetStringRange  (CTLineRef line )    //获取line中文字在整段文字中的Range
+ 	CFRange CTLineGetStringRange  (CTLineRef line )    //获取line中文字在整段文字中的Range
 
- CFArrayRef CTLineGetGlyphRuns  (CTLineRef line )    //获取line中包含所有run的数组
+ 	CFArrayRef CTLineGetGlyphRuns  (CTLineRef line )    //获取line中包含所有run的数组
 
- CFRange CTRunGetStringRange  (CTRunRef run )     //获取run在整段文字中的Range
+ 	CFRange CTRunGetStringRange  (CTRunRef run )     //获取run在整段文字中的Range
 
- CFIndex CTLineGetStringIndexForPosition(
-   CTLineRef line,
-   CGPoint position )   //获取点击处position文字在整段文字中的index
+ 	CFIndex CTLineGetStringIndexForPosition(
+    CTLineRef line,
+    CGPoint position )   //获取点击处position文字在整段文字中的index
 
-   CGFloat CTLineGetOffsetForStringIndex(
-   CTLineRef line,
-   CFIndex charIndex,
-   CGFloat* secondaryOffset ) //获取整段文字中charIndex位置的字符相对line的原点的x值
+    CGFloat CTLineGetOffsetForStringIndex(
+    CTLineRef line,
+    CFIndex charIndex,
+    CGFloat* secondaryOffset ) //获取整段文字中charIndex位置的字符相对line的原点的x值
 
-  主要步骤：
+    /*主要步骤：
 
-       1）计算并存储文字中保含的所有表情文字及其Range
+      1）计算并存储文字中保含的所有表情文字及其Range
 
-       2）替换表情文字为指定宽度的NSAttributedString
+      2）替换表情文字为指定宽度的NSAttributedString*/
 
-           CTRunDelegateCallbacks callbacks;
-   callbacks.version = kCTRunDelegateVersion1;
-   callbacks.getAscent = ascentCallback;
-   callbacks.getDescent = descentCallback;
-   callbacks.getWidth = widthCallback;
-   callbacks.dealloc = deallocCallback;
+    CTRunDelegateCallbacks callbacks;
+    callbacks.version = kCTRunDelegateVersion1;
+    callbacks.getAscent = ascentCallback;
+    callbacks.getDescent = descentCallback;
+    callbacks.getWidth = widthCallback;
+    callbacks.dealloc = deallocCallback;
    
-   CTRunDelegateRef runDelegate = CTRunDelegateCreate(&callbacks, NULL);
-   NSDictionary *attrDictionaryDelegate = [NSDictionary dictionaryWithObjectsAndKeys:
+    CTRunDelegateRef runDelegate = CTRunDelegateCreate(&callbacks, NULL);
+    NSDictionary *attrDictionaryDelegate = [NSDictionary dictionaryWithObjectsAndKeys:
                                            (id)runDelegate, (NSString*)kCTRunDelegateAttributeName,
                                            [UIColor clearColor].CGColor,(NSString*)kCTForegroundColorAttributeName,
                                            nil];
    
-   NSAttributedString *faceAttributedString = [[NSAttributedString alloc] initWithString:@"*" attributes:attrDictionaryDelegate];
+    NSAttributedString *faceAttributedString = [[NSAttributedString alloc] initWithString:@"*" attributes:attrDictionaryDelegate];
    
    [weiBoText replaceCharactersInRange:faceRange withAttributedString:faceAttributedString];
    [faceAttributedString release]; 
