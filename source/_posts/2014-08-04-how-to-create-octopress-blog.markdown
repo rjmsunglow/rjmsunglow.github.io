@@ -70,16 +70,15 @@ config.yml是博客重要的一个配置文件，在config.yml文件中有三大
 ###5.发表文章
 创建一个新的markdown文件：
 
- ```
+```
  rake new_post["octopress Blog"]
- ```
+```
  
- 这样所创建出来的博客名称是英文的，就算是你刻意写成中文还是会自己转译为英文的，所以如果再去文件里修改title，再修改index.html则会显得很麻烦，无疑是增加了工作量，所以我也找到一个方便的方法来解决这个问题：
+这样所创建出来的博客名称是英文的，就算是你刻意写成中文还是会自己转译为英文的，所以如果再去文件里修改title，再修改index.html则会显得很麻烦，无疑是增加了工作量，所以我也找到一个方便的方法来解决这个问题：
 
- 打开在octopress根目录下的Rakefile文件，在文件末尾增加如下代码：
+打开在octopress根目录下的Rakefile文件，在文件末尾增加如下代码：
  
- 
- ```
+```
  esc "Begin a new post in #{source_dir}/#{posts_dir} with Alias"
 task :post, :title, :title_alias do |t, args|
   raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(source_dir)
