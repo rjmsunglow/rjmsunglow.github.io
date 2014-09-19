@@ -32,7 +32,7 @@ RAC(self.logInButton, enabled) = [RACSignal
             return @(username.length > 0 && password.length > 0 && !loggingIn.boolValue && !loggedIn.boolValue); 
         }]; 
  ```
- 左边的RAC(...)，它的作用是将self.logInButton.enabled属性与右边的signal的sendNext值绑定。也就是如果右边的reduce的返回值为NO，那么enabled就为NO。右边的combineLatest是获取这4个signal的next值。其中可以看到self.usernameTextField.rac_textSignal这么个东东，rac_textSignal是RAC为UITextField添加的category，只要usernameTextField的值有变化，这个值就会被返回(sendNext)。combineLatest需要每个signal至少都有过一次sendNext。reduce的作用是根据接收到的值，再返回一个新的值，这里是@(YES)和@(NO)，必须是object。
+左边的RAC(...)，它的作用是将self.logInButton.enabled属性与右边的signal的sendNext值绑定。也就是如果右边的reduce的返回值为NO，那么enabled就为NO。右边的combineLatest是获取这4个signal的next值。其中可以看到self.usernameTextField.rac_textSignal这么个东东，rac_textSignal是RAC为UITextField添加的category，只要usernameTextField的值有变化，这个值就会被返回(sendNext)。combineLatest需要每个signal至少都有过一次sendNext。reduce的作用是根据接收到的值，再返回一个新的值，这里是@(YES)和@(NO)，必须是object。
 - - -
 ####冷信号(Cold)和热信号(Hot)
 冷信号默认什么也不干.
