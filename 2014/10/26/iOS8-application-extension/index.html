@@ -4,10 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>first | J了个M</title>
+    <title>iOS8 应用程序扩展开发 | J了个M</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="James Ren">
+    
+    <meta name="description" content="前段时间对iOS8的应用程序扩展做了一些研究，然后做了一些总结，希望能对大家有些帮助。
+基础
+应用扩展是iOS8的一个新特性，应用扩展允许开发者扩展应用的自定义功能和内容，能够让用户在使用其他app时使用该项功能。应用程序扩展不是一个应用，它是主体应用程序（containing app）中一个单独的">
     
     
     
@@ -68,14 +72,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/21/first/" title="first" itemprop="url">first</a>
+      <a href="/2014/10/26/iOS8-application-extension/" title="iOS8 应用程序扩展开发" itemprop="url">iOS8 应用程序扩展开发</a>
   </h1>
   <p class="article-author">By
        
 		<a href="http://yoursite.com/about" title="James Ren" target="_blank" itemprop="author">James Ren</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-21T06:52:54.000Z" itemprop="datePublished"> Published Oct 21 2014</time>
+    <time datetime="2014-10-26T05:37:57.000Z" itemprop="datePublished"> Published Oct 26 2014</time>
     
   </p>
 </header>
@@ -85,11 +89,23 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础"><span class="toc-number">1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试"><span class="toc-number">2.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Today应用扩展"><span class="toc-number">3.</span> <span class="toc-text">Today应用扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#禁用的API"><span class="toc-number">4.</span> <span class="toc-text">禁用的API</span></a></li></ol>
 		
 		</div>
 		
-		  
+		<p>前段时间对iOS8的应用程序扩展做了一些研究，然后做了一些总结，希望能对大家有些帮助。</p>
+<h3 id="基础">基础</h3>
+<p>应用扩展是iOS8的一个新特性，应用扩展允许开发者扩展应用的自定义功能和内容，能够让用户在使用其他app时使用该项功能。<br>应用程序扩展不是一个应用，它是主体应用程序（containing app）中一个单独的包，并能生成单独的二进制文件供其他应用调用。<br>应用程序扩展类型：<br>Today<br>Share<br>Action<br>Photo Editing<br>Finder Sync （OS X）<br>Custom Keyboard</p>
+<h3 id="调试">调试</h3>
+<p>当启动应用程序性扩展的时候，Xcode会询问想要关联的的主应用程序。然后启动之后，在测试设备上激活应用扩展，Xcode将关联应用扩展以便于调试。<br>但是问题来了。。。断点并不能打断应用扩展的运行。所以现在只能选择基于NSLog的调试方法了。</p>
+<h3 id="Today应用扩展">Today应用扩展</h3>
+<p>在对Today的应用扩展开发中，还有一件事情比较烦躁，Xcode好像并不能终止Today引用扩展的运行，就是当调整了代码之后在运行程序，会发现Today扩展中的运行结果并不会改变，这个实在让我很是不解。。。，所以只能通过以下的手段了：</p>
+<p>1.关闭或重新打开通知中心；<br>2.选择通知中心的“编辑”，移除应用扩展，重新添加；<br>3.拔下或重新连接设备；</p>
+<p>还有在官方文档中，官方对Today应用扩展的UI建议是：<br>1.避免在插件中放置滚动视图，因为用户在滚动插件中的内容时，会很容易误滚动整个Today视图；<br>2.通常情况下，不应该让插件过高，因为用户必须滚动才能查看全部内容；</p>
+<h3 id="禁用的API">禁用的API</h3>
+<p>在应用扩展开发中，有些API是不可用的，只要在顶部标有NS_EXTENSION_UNAVAILABLE标识的框架将不能使用。<br>但是是有一些解决方法的，我还在研究。敬请期待！</p>
+<p>[UIApplication sharedApplication]的应用也受到限制。</p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
@@ -100,7 +116,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://yoursite.com/2014/10/21/first/" data-title="first | J了个M" data-tsina="null" class="share clearfix">
+  <div data-url="http://yoursite.com/2014/10/26/iOS8-application-extension/" data-title="iOS8 应用程序扩展开发 | J了个M" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -115,7 +131,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础"><span class="toc-number">1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试"><span class="toc-number">2.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Today应用扩展"><span class="toc-number">3.</span> <span class="toc-text">Today应用扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#禁用的API"><span class="toc-number">4.</span> <span class="toc-text">禁用的API</span></a></li></ol>
  
   </div>
 
