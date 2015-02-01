@@ -4,10 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Objective-C-Messaging | J了个M</title>
+    <title>Objective-C中的消息传递 | J了个M</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="James Ren">
+    
+    <meta name="description" content="Objective-C是一个动态语言，这表示它不仅需要一个编译器，还需要一个运行时系统来动态得到创建类和对象、进行消息的传递和转发。所以利用Runtime就可以从系统层面解决一些设计和技术问题，这就必须要了解Runtime的消息传递机制。
+消息传递Messaging
+在Objective-C中，如果">
     
     
     
@@ -68,7 +72,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/02/01/Objective-C-Messaging/" title="Objective-C-Messaging" itemprop="url">Objective-C-Messaging</a>
+      <a href="/2015/02/01/Objective-C-Messaging/" title="Objective-C中的消息传递" itemprop="url">Objective-C中的消息传递</a>
   </h1>
   <p class="article-author">By
        
@@ -85,11 +89,21 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#消息传递Messaging"><span class="toc-number">1.</span> <span class="toc-text">消息传递Messaging</span></a></li></ol>
 		
 		</div>
 		
-		  
+		<p>Objective-C是一个动态语言，这表示它不仅需要一个编译器，还需要一个运行时系统来动态得到创建类和对象、进行消息的传递和转发。所以利用Runtime就可以从系统层面解决一些设计和技术问题，这就必须要了解Runtime的消息传递机制。</p>
+<h4 id="消息传递Messaging">消息传递Messaging</h4>
+<p>在Objective-C中，如果有个object对象中有个message方法，那么OC中得调用方式是[Object message],执行这个语法的时候其实是并不会立即执行message这个方法里的代码，它是在运行时给object发送一条叫做message的消息。这个消息，也许是object来处理，也许传递给别的对象，多条不同的消息也可以对应同一个方法实现，这些都是在运行期间决定的。<br>比如说下面两端代码是等价的：</p>
+<figure class="highlight Objective-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">array</span> insertObject:<span class="keyword">message</span> atIndex:<span class="number">5</span>];</div><div class="line"></div><div class="line"><span class="comment">//OC中的消息传递</span></div><div class="line">objc_msgSend(<span class="keyword">array</span>, @selector(insertObject:atIndex:), <span class="keyword">message</span>, <span class="number">5</span>);</div></pre></td></tr></table></figure>
+
+<p>消息传递的关键藏于 objc_object 中的 isa 指针和 objc_class 中的 class dispatch table。</p>
+<p>在上面中或许你会问到如果没有找到message这个方法会发生什么样的问题，一般情况下，程序会在运行时挂掉并抛出 unrecongnized selector send to …的异常。但在此之前，Objective-C运行时会调用+resolveInstanceMethod: 或者 +resolveClassMethod:，这样就可以添加一个函数并返回YES，在运行时系统会重新启动一次消息发送的过程。</p>
+<figure class="highlight Objective-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> messageMethod(<span class="keyword">id</span> obj, SEL _cmd)  </div><div class="line">{</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Doing foo"</span>);</div><div class="line">}</div><div class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)aSEL</div><div class="line">{</div><div class="line">    <span class="keyword">if</span>(aSEL == <span class="keyword">@selector</span>(foo:)){</div><div class="line">        class_addMethod([<span class="keyword">self</span> class], aSEL, (IMP)messageMethod, <span class="string">"v@:"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod];</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>Core Data 有用到这个方法。NSManagedObjects 中 properties 的 getter 和 setter 就是在运行时动态添加的</p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
@@ -100,7 +114,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://yoursite.com/2015/02/01/Objective-C-Messaging/" data-title="Objective-C-Messaging | J了个M" data-tsina="null" class="share clearfix">
+  <div data-url="http://yoursite.com/2015/02/01/Objective-C-Messaging/" data-title="Objective-C中的消息传递 | J了个M" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -128,7 +142,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#消息传递Messaging"><span class="toc-number">1.</span> <span class="toc-text">消息传递Messaging</span></a></li></ol>
  
   </div>
 
